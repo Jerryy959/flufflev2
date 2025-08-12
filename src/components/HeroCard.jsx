@@ -167,6 +167,7 @@ const HeroCard = () => {
           transform: 'scale(0.6)',
           transformOrigin: 'top left',
         }}
+        onClick={(e) => e.stopPropagation()} // 阻止事件冒泡
       >
         {/* 标题 */}
         <div className="text-center mb-4">
