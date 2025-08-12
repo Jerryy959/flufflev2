@@ -102,8 +102,7 @@ const HeroCard = () => {
   const offsetX = 450 // 水平偏移（可调）
   const offsetY = 200 // 垂直偏移（可调）
   // 镜像角色的百分比位置
-  const [mirrorPos, setMirrorPos] = useState({ xPercent: 0.5, yPercent: 0.5 })
-
+  const [mirrorPos, setMirrorPos] = useState({ x: 0, y: 0 })
   const handleBackgroundClick = (e) => {
     const rect = e.currentTarget.getBoundingClientRect()
     const clickX = e.clientX - rect.left
@@ -112,10 +111,10 @@ const HeroCard = () => {
     const heroWidth = 256 * mirrorScale
     const heroHeight = 256 * mirrorScale
 
-    // 用百分比存储（以角色中心对准点击点）
+    // 用像素坐标存储，角色中心对准点击点
     setMirrorPos({
-      xPercent: (clickX - heroWidth / 2) / rect.width,
-      yPercent: (clickY - heroHeight / 2) / rect.height,
+      x: clickX - heroWidth / 2,
+      y: clickY - heroHeight / 2,
     })
   }
 
@@ -220,14 +219,15 @@ const HeroCard = () => {
 
           {/* 镜像可控角色 */}
           <div
-            className="absolute transition-transform duration-500 ease-out"
+            className="absolute"
             style={{
-              transform: `translate(${mirrorPos.xPercent * 100}%, ${
-                mirrorPos.yPercent * 100
-              }%) scale(${mirrorScale}) scaleX(-1)`,
+              left: `${mirrorPos.x}px`,
+              top: `${mirrorPos.y}px`,
+              transform: `scale(${mirrorScale}) scaleX(-1)`,
               transformOrigin: 'top left',
               width: '256px',
               height: '256px',
+              transition: 'left 0.3s ease-out, top 0.3s ease-out',
             }}
           >
             <SpriteAnimation
