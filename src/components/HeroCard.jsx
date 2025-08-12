@@ -65,7 +65,22 @@ const HeroCard = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 p-4">
+    <div className="relative flex items-center justify-center min-h-screen p-4 overflow-hidden">
+      <div className="fixed inset-0 z-0 overflow-hidden">
+  <video
+    autoPlay
+    loop
+    muted
+    playsInline
+    className="absolute w-auto h-auto min-w-screen min-h-screen"
+    style={{
+      transform: 'translate(12%, 24%)', // 水平右移10%，垂直下移10%
+    }}
+  >
+    <source src="/assets/world/bg.webm" type="video/webm" />
+  </video>
+</div>
+
       <div className="relative bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md aspect-square">
         {/* 标题 */}
         <div className="text-center mb-4">
