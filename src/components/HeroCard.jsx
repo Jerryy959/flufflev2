@@ -65,23 +65,34 @@ const HeroCard = () => {
   }
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen p-4 overflow-hidden">
+    <div
+      className="relative flex items-start justify-start min-h-screen p-4 overflow-hidden"
+      style={{
+        paddingTop: '5%',  // 距顶部 10%
+        paddingLeft: '5%'   // 距左边 5%
+      }}
+    >
       <div className="fixed inset-0 z-0 overflow-hidden">
-  <video
-    autoPlay
-    loop
-    muted
-    playsInline
-    className="absolute w-auto h-auto min-w-screen min-h-screen"
-    style={{
-      transform: 'translate(12%, 24%)', // 水平右移10%，垂直下移10%
-    }}
-  >
+      <video
+         autoPlay
+         loop
+         muted
+         playsInline
+         className="absolute w-auto h-auto min-w-screen min-h-screen"
+         style={{
+           transform: 'translate(12%, 24%)', // 水平右移10%，垂直下移10%
+         }}
+      >
     <source src="/assets/world/bg.webm" type="video/webm" />
-  </video>
-</div>
+    </video>
+    </div>
 
-      <div className="relative bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md aspect-square">
+      <div className="relative bg-white rounded-3xl shadow-2xl p-6 w-full max-w-sm aspect-square"
+        style={{
+          transform: 'scale(0.6)',
+          transformOrigin: 'top left' // 缩放参考点
+        }}
+      >
         {/* 标题 */}
         <div className="text-center mb-4">
           <h1 className="text-2xl font-bold text-gray-800">英雄角色展示</h1>
