@@ -1,0 +1,17 @@
+.player {
+  position: fixed; /* 悬浮在视口 */
+  bottom: 82%; /* 距离底部 5% 的视口高度 */
+  right: 2%;
+  cursor: pointer;
+}
+
+.player img {
+  width: 4vw; /* 宽度占浏览器宽度的 8% */
+  height: auto;
+
+  transition: transform 0.2s ease;
+}
+
+.player img.hovered {
+  transform: scale(1.1); /* 放大一点点 */
+}
