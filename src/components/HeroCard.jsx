@@ -7,7 +7,10 @@ const HeroCard = () => {
   const [currentHero, setCurrentHero] = useState(0)
   const [currentHat, setCurrentHat] = useState(0)
   const [currentGlove, setCurrentGlove] = useState(0)
-  const [slicePositions, setSlicePositions] = useState({ headSlice: null, handSlice: null })
+  const [slicePositions, setSlicePositions] = useState({
+    headSlice: null,
+    handSlice: null,
+  })
 
   // 镜像角色位置
   const [mirrorX, setMirrorX] = useState(1500) // 初始X位置
@@ -16,26 +19,54 @@ const HeroCard = () => {
 
   // 角色列表
   const heroes = ['Mush', 'Rishi', 'Fluf']
-  
+
   // 帽子列表
   const hats = [
-    'birdnest.png', 'brownhat.png', 'buckethat.png', 'cap.png', 'cowboy_hat.png',
-    'crown.png', 'crystal crown.png', 'glasses.png', 'hawaii flower.png', 'hawaii orange.png',
-    'navy hat.png', 'navycap.png', 'ninja headband.png', 'pan.png', 'pancake.png',
-    'pinkbow.png', 'redbow.png', 'yellow hat.png'
+    'birdnest.png',
+    'brownhat.png',
+    'buckethat.png',
+    'cap.png',
+    'cowboy_hat.png',
+    'crown.png',
+    'crystal crown.png',
+    'glasses.png',
+    'hawaii flower.png',
+    'hawaii orange.png',
+    'navy hat.png',
+    'navycap.png',
+    'ninja headband.png',
+    'pan.png',
+    'pancake.png',
+    'pinkbow.png',
+    'redbow.png',
+    'yellow hat.png',
   ]
-  
+
   // 武器列表
   const gloves = [
-    'Fries.png', 'banana.png', 'boba.png', 'bottle of wine.png', 'broom.png',
-    'bunch flower.png', 'carrot.png', 'chainsow.png', 'headphone.png', 'icecream.png',
-    'mc bag.png', 'mc box.png', 'microphone.png', 'onion.png', 'openbook.png',
-    'sushi.png', 'totebag.png', 'trophy.png'
+    'Fries.png',
+    'banana.png',
+    'boba.png',
+    'bottle of wine.png',
+    'broom.png',
+    'bunch flower.png',
+    'carrot.png',
+    'chainsow.png',
+    'headphone.png',
+    'icecream.png',
+    'mc bag.png',
+    'mc box.png',
+    'microphone.png',
+    'onion.png',
+    'openbook.png',
+    'sushi.png',
+    'totebag.png',
+    'trophy.png',
   ]
 
   // 切换函数
   const switchHero = (direction) => {
-    setCurrentHero(prev => {
+    setCurrentHero((prev) => {
       if (direction === 'next') {
         return (prev + 1) % heroes.length
       } else {
@@ -45,7 +76,7 @@ const HeroCard = () => {
   }
 
   const switchHat = (direction) => {
-    setCurrentHat(prev => {
+    setCurrentHat((prev) => {
       if (direction === 'next') {
         return (prev + 1) % hats.length
       } else {
@@ -55,7 +86,7 @@ const HeroCard = () => {
   }
 
   const switchGlove = (direction) => {
-    setCurrentGlove(prev => {
+    setCurrentGlove((prev) => {
       if (direction === 'next') {
         return (prev + 1) % gloves.length
       } else {
@@ -68,15 +99,38 @@ const HeroCard = () => {
   const handleSliceUpdate = (positions) => {
     setSlicePositions(positions)
   }
+  const offsetX = 450 // 水平偏移（可调）
+  const offsetY = 200 // 垂直偏移（可调）
+  // 镜像角色的百分比位置
+  const [mirrorPos, setMirrorPos] = useState({ xPercent: 0.5, yPercent: 0.5 })
+
+  const handleBackgroundClick = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const clickX = e.clientX - rect.left
+    const clickY = e.clientY - rect.top
+
+    const heroWidth = 256 * mirrorScale
+    const heroHeight = 256 * mirrorScale
+
+    // 用百分比存储（以角色中心对准点击点）
+    setMirrorPos({
+      xPercent: (clickX - heroWidth / 2) / rect.width,
+      yPercent: (clickY - heroHeight / 2) / rect.height,
+    })
+  }
 
   // 监听键盘控制镜像角色
   useEffect(() => {
     const handleKeyDown = (e) => {
       const step = 10
-      if (e.key === 'ArrowUp' || e.key.toLowerCase() === 'w') setMirrorY(prev => prev - step)
-      if (e.key === 'ArrowDown' || e.key.toLowerCase() === 's') setMirrorY(prev => prev + step)
-      if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a') setMirrorX(prev => prev - step)
-      if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd') setMirrorX(prev => prev + step)
+      if (e.key === 'ArrowUp' || e.key.toLowerCase() === 'w')
+        setMirrorY((prev) => prev - step)
+      if (e.key === 'ArrowDown' || e.key.toLowerCase() === 's')
+        setMirrorY((prev) => prev + step)
+      if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a')
+        setMirrorX((prev) => prev - step)
+      if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd')
+        setMirrorX((prev) => prev + step)
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
@@ -87,8 +141,9 @@ const HeroCard = () => {
       className="relative flex items-start justify-start min-h-screen p-4 overflow-hidden"
       style={{
         paddingTop: '5%',
-        paddingLeft: '5%'
+        paddingLeft: '5%',
       }}
+      onClick={handleBackgroundClick}
     >
       {/* 背景视频 */}
       <div className="fixed inset-0 z-0 overflow-hidden">
@@ -99,7 +154,7 @@ const HeroCard = () => {
           playsInline
           className="absolute w-auto h-auto min-w-screen min-h-screen"
           style={{
-            transform: 'translate(12%, 24%)'
+            transform: 'translate(12%, 24%)',
           }}
         >
           <source src="/assets/world/bg.webm" type="video/webm" />
@@ -107,10 +162,11 @@ const HeroCard = () => {
       </div>
 
       {/* 卡片内容 */}
-      <div className="relative bg-white rounded-3xl shadow-2xl p-6 w-full max-w-sm aspect-square"
+      <div
+        className="relative bg-white rounded-3xl shadow-2xl p-6 w-full max-w-sm aspect-square"
         style={{
           transform: 'scale(0.6)',
-          transformOrigin: 'top left'
+          transformOrigin: 'top left',
         }}
       >
         {/* 标题 */}
@@ -118,19 +174,19 @@ const HeroCard = () => {
           <h1 className="text-2xl font-bold text-gray-800">英雄角色展示</h1>
           <p className="text-sm text-gray-600">点击箭头切换角色和装备</p>
         </div>
-        
+
         {/* 角色展示区域 */}
         <div className="relative flex items-center justify-center h-64">
           {/* 主角色 */}
           <div className="relative w-64 h-64 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl overflow-hidden shadow-inner border-2 border-gray-200">
             <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-gray-600 opacity-30 rounded-full blur-sm"></div>
-            
-            <SpriteAnimation 
-              heroName={heroes[currentHero]} 
+
+            <SpriteAnimation
+              heroName={heroes[currentHero]}
               className="w-full h-full transition-all duration-300"
               onSliceUpdate={handleSliceUpdate}
             />
-            
+
             {/* 帽子装备 */}
             {slicePositions.headSlice && (
               <img
@@ -145,7 +201,7 @@ const HeroCard = () => {
                 }}
               />
             )}
-            
+
             {/* 武器装备 */}
             {slicePositions.handSlice && (
               <img
@@ -163,50 +219,50 @@ const HeroCard = () => {
           </div>
 
           {/* 镜像可控角色 */}
-<div 
-  className="absolute"
-  style={{
-    transform: `translate(${mirrorX}px, ${mirrorY}px) scale(${mirrorScale}) scaleX(-1)`,
-    transformOrigin: 'top left', // 让缩放以左上角为基准
-    top: '0',
-    left: '0',
-    width: '256px', // 原始角色宽度
-    height: '256px' // 原始角色高度
-  }}
->
-  <SpriteAnimation 
-    heroName={heroes[currentHero]} 
-    className="w-full h-full"
-    onSliceUpdate={() => {}}
-  />
-  {slicePositions.headSlice && (
-    <img
-      src={`/assets/world/hat/${hats[currentHat]}`}
-      alt="帽子"
-      className="absolute pointer-events-none"
-      style={{
-        left: `${(slicePositions.headSlice.x / 256) * 100}%`,
-        top: `${(slicePositions.headSlice.y / 256) * 100}%`,
-        width: `${(slicePositions.headSlice.w / 256) * 100}%`,
-        height: `${(slicePositions.headSlice.h / 256) * 100}%`,
-      }}
-    />
-  )}
-  {slicePositions.handSlice && (
-    <img
-      src={`/assets/world/gloves/${gloves[currentGlove]}`}
-      alt="武器"
-      className="absolute pointer-events-none"
-      style={{
-        left: `${(slicePositions.handSlice.x / 256) * 100}%`,
-        top: `${(slicePositions.handSlice.y / 256) * 100}%`,
-        width: `${(slicePositions.handSlice.w / 256) * 100}%`,
-        height: `${(slicePositions.handSlice.h / 256) * 100}%`,
-      }}
-    />
-  )}
-</div>
-          
+          <div
+            className="absolute transition-transform duration-500 ease-out"
+            style={{
+              transform: `translate(${mirrorPos.xPercent * 100}%, ${
+                mirrorPos.yPercent * 100
+              }%) scale(${mirrorScale}) scaleX(-1)`,
+              transformOrigin: 'top left',
+              width: '256px',
+              height: '256px',
+            }}
+          >
+            <SpriteAnimation
+              heroName={heroes[currentHero]}
+              className="w-full h-full"
+              onSliceUpdate={() => {}}
+            />
+            {slicePositions.headSlice && (
+              <img
+                src={`/assets/world/hat/${hats[currentHat]}`}
+                alt="帽子"
+                className="absolute pointer-events-none"
+                style={{
+                  left: `${(slicePositions.headSlice.x / 256) * 100}%`,
+                  top: `${(slicePositions.headSlice.y / 256) * 100}%`,
+                  width: `${(slicePositions.headSlice.w / 256) * 100}%`,
+                  height: `${(slicePositions.headSlice.h / 256) * 100}%`,
+                }}
+              />
+            )}
+            {slicePositions.handSlice && (
+              <img
+                src={`/assets/world/gloves/${gloves[currentGlove]}`}
+                alt="武器"
+                className="absolute pointer-events-none"
+                style={{
+                  left: `${(slicePositions.handSlice.x / 256) * 100}%`,
+                  top: `${(slicePositions.handSlice.y / 256) * 100}%`,
+                  width: `${(slicePositions.handSlice.w / 256) * 100}%`,
+                  height: `${(slicePositions.handSlice.h / 256) * 100}%`,
+                }}
+              />
+            )}
+          </div>
+
           {/* 左侧箭头组 */}
           <div className="absolute left-2 flex flex-col space-y-3">
             <Button
@@ -237,7 +293,7 @@ const HeroCard = () => {
               <ChevronLeft className="w-5 h-5 text-orange-600 group-hover:text-orange-700" />
             </Button>
           </div>
-          
+
           {/* 右侧箭头组 */}
           <div className="absolute right-2 flex flex-col space-y-3">
             <Button
@@ -269,23 +325,29 @@ const HeroCard = () => {
             </Button>
           </div>
         </div>
-        
+
         {/* 状态显示 */}
         <div className="mt-6 space-y-2">
           <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
             <span className="text-sm font-medium text-gray-700">角色:</span>
-            <span className="text-sm font-bold text-purple-600">{heroes[currentHero]}</span>
+            <span className="text-sm font-bold text-purple-600">
+              {heroes[currentHero]}
+            </span>
           </div>
           <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
             <span className="text-sm font-medium text-gray-700">帽子:</span>
-            <span className="text-sm font-bold text-blue-600">{hats[currentHat].replace('.png', '')}</span>
+            <span className="text-sm font-bold text-blue-600">
+              {hats[currentHat].replace('.png', '')}
+            </span>
           </div>
           <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
             <span className="text-sm font-medium text-gray-700">武器:</span>
-            <span className="text-sm font-bold text-orange-600">{gloves[currentGlove].replace('.png', '')}</span>
+            <span className="text-sm font-bold text-orange-600">
+              {gloves[currentGlove].replace('.png', '')}
+            </span>
           </div>
         </div>
-        
+
         {/* 操作说明 */}
         <div className="mt-4 text-center">
           <div className="flex items-center justify-center space-x-4 text-xs text-gray-500">
